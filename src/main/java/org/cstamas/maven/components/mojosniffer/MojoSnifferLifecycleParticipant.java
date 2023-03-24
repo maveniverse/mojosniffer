@@ -18,21 +18,33 @@
  */
 package org.cstamas.maven.components.mojosniffer;
 
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
-import com.google.inject.AbstractModule;
+import org.apache.maven.AbstractMavenLifecycleParticipant;
+import org.apache.maven.execution.MavenSession;
 
 /**
- * Sisu picks up this "named module" (Guice {@link com.google.inject.Module} annotated with {@link Named}) and
- * automatically installs it.
+ * Mojo sniffer participant that listens for session begins and ends.
  */
 @Named
-public class MojoSnifferModule extends AbstractModule {
+@Singleton
+public class MojoSnifferLifecycleParticipant extends AbstractMavenLifecycleParticipant {
+    private final MojoSniffer mojoSniffer;
+
+    @Inject
+    public MojoSnifferLifecycleParticipant(MojoSniffer mojoSniffer) {
+        this.mojoSniffer = mojoSniffer;
+    }
+
     @Override
-    protected void configure() {
-        MojoSniffer sniffer = new MojoSniffer();
-        requestInjection(sniffer);
-        bind(MojoSniffer.class).toInstance(sniffer);
-        bindInterceptor(sniffer.getClassMatcher(), sniffer.getMethodMatcher(), sniffer.getMethodInterceptor());
+    public void afterSessionStart(MavenSession session) {
+        mojoSniffer.sessionStarted(session);
+    }
+
+    @Override
+    public void afterSessionEnd(MavenSession session) {
+        mojoSniffer.sessionStopped(session);
     }
 }
