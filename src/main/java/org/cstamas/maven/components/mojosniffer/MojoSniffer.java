@@ -27,6 +27,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +54,17 @@ public class MojoSniffer {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     public static final String DUMPER_ENABLED = MojoSniffer.class.getSimpleName() + ".enabled";
+    public static final String DUMPER_STACKTRACE = MojoSniffer.class.getSimpleName() + ".stacktrace";
     public static final String DUMPER_FILE = MojoSniffer.class.getSimpleName() + ".file";
     // number of lines from the stack trace to discard
     // those come from the interception mechanism
     private static final int LINES_TO_IGNORE = 6;
 
     private final boolean enabled;
-    private final PrintWriter writer;
+
     private final boolean printStackTrace;
+
+    private final PrintWriter writer;
     private final Map<String, Set<List<String>>> invocations = new ConcurrentHashMap<>();
 
     private ClassRealmManager classRealmManager;
@@ -68,20 +72,20 @@ public class MojoSniffer {
     @Inject
     public MojoSniffer() {
         this.enabled = Boolean.getBoolean(DUMPER_ENABLED);
+        this.printStackTrace = Boolean.getBoolean(DUMPER_STACKTRACE);
         PrintWriter pw = null;
-        boolean printStackTrace = false;
         if (this.enabled) {
             String file = System.getProperty(DUMPER_FILE, "target/sniffer.log");
+            Path path = Paths.get(file);
             try {
+                Files.createDirectories(path.getParent());
                 pw = new PrintWriter(Files.newBufferedWriter(Paths.get(file)));
-                printStackTrace = true;
             } catch (IOException e) {
                 System.err.println("Unable to write to " + file + ", using stdout (" + e + ")");
                 pw = new PrintWriter(new OutputStreamWriter(System.out));
             }
         }
         this.writer = pw;
-        this.printStackTrace = printStackTrace;
     }
 
     @Inject
@@ -104,7 +108,7 @@ public class MojoSniffer {
         List<String> stackTrace =
                 Stream.of(sw.toString().split("\n")).skip(LINES_TO_IGNORE).collect(Collectors.toList());
         if (stackTraces.add(stackTrace)) {
-            if (!isInternalCall(stackTrace) && !isFromDefaultModelBuilder(stackTrace)) {
+            if (!isInternalCall(stackTrace)) {
                 synchronized (writer) {
                     if (printStackTrace) {
                         writer.println(method);
@@ -118,15 +122,6 @@ public class MojoSniffer {
                 }
             }
         }
-    }
-
-    /**
-     * Disable calls from the DefaultProjectBuildingHelper
-     */
-    private boolean isFromDefaultModelBuilder(List<String> stackTrace) {
-        return stackTrace.get(0).contains("org.apache.maven.project.DefaultProjectBuildingHelper")
-                && stackTrace.get(1).contains("org.apache.maven.project.DefaultModelBuildingListener")
-                && stackTrace.get(2).contains("org.apache.maven.model.building.DefaultModelBuilder.fireEvent");
     }
 
     /**
