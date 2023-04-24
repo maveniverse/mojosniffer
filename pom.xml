@@ -20,10 +20,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.maven.shared</groupId>
-    <artifactId>maven-shared-components</artifactId>
-    <version>39</version>
-    <relativePath />
+    <groupId>eu.maveniverse.maven.parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>1</version>
   </parent>
 
   <groupId>eu.maveniverse.maven.extensions</groupId>
@@ -84,6 +83,7 @@
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
+      <version>0.3.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -18,9 +18,8 @@
  */
 package org.cstamas.maven.components.mojosniffer;
 
-import javax.inject.Named;
-
 import com.google.inject.AbstractModule;
+import javax.inject.Named;
 
 /**
  * Sisu picks up this "named module" (Guice {@link com.google.inject.Module} annotated with {@link Named}) and

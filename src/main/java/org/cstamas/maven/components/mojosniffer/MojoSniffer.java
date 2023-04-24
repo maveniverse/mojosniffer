@@ -18,8 +18,8 @@
  */
 package org.cstamas.maven.components.mojosniffer;
 
-import javax.inject.Inject;
-
+import com.google.inject.matcher.AbstractMatcher;
+import com.google.inject.matcher.Matcher;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -35,9 +35,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.matcher.Matcher;
+import javax.inject.Inject;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.maven.artifact.repository.ArtifactRepository;

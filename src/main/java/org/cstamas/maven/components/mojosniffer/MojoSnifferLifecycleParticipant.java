@@ -21,7 +21,6 @@ package org.cstamas.maven.components.mojosniffer;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-
 import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.execution.MavenSession;
 
