@@ -26,7 +26,7 @@
     <relativePath />
   </parent>
 
-  <groupId>org.cstamas.maven.components</groupId>
+  <groupId>eu.maveniverse.maven.extensions</groupId>
   <artifactId>mojosniffer</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
@@ -34,17 +34,17 @@
   <description>Provides extension for sniffing Mojos.</description>
 
   <scm>
-    <connection>scm:git:git@github.com:cstamas/mojo-sniffer.git</connection>
-    <developerConnection>scm:git:git@github.com:cstamas/mojo-sniffer.git</developerConnection>
-    <url>https://github.com/cstamas/mojo-sniffer</url>
+    <connection>scm:git:git@github.com:maveniverse/mojosniffer.git</connection>
+    <developerConnection>scm:git:git@github.com:maveniverse/mojosniffer.git</developerConnection>
+    <url>https://github.com/maveniverse/mojosniffer</url>
   </scm>
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/cstamas/mojo-sniffer/issues</url>
+    <url>https://github.com/maveniverse/mojosniffer/issues</url>
   </issueManagement>
   <ciManagement>
     <system>github</system>
-    <url>https://github.com/cstamas/mojo-sniffer/actions/</url>
+    <url>https://github.com/maveniverse/mojosniffer/actions/</url>
   </ciManagement>
 
   <properties>
