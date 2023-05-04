@@ -16,34 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.cstamas.maven.components.mojosniffer;
+package eu.maveniverse.maven.extensions.mojosniffer;
 
-import javax.inject.Inject;
+import com.google.inject.AbstractModule;
 import javax.inject.Named;
-import javax.inject.Singleton;
-import org.apache.maven.AbstractMavenLifecycleParticipant;
-import org.apache.maven.execution.MavenSession;
 
 /**
- * Mojo sniffer participant that listens for session begins and ends.
+ * Sisu picks up this "named module" (Guice {@link com.google.inject.Module} annotated with {@link Named}) and
+ * automatically installs it.
  */
 @Named
-@Singleton
-public class MojoSnifferLifecycleParticipant extends AbstractMavenLifecycleParticipant {
-    private final MojoSniffer mojoSniffer;
-
-    @Inject
-    public MojoSnifferLifecycleParticipant(MojoSniffer mojoSniffer) {
-        this.mojoSniffer = mojoSniffer;
-    }
-
+public class MojoSnifferModule extends AbstractModule {
     @Override
-    public void afterSessionStart(MavenSession session) {
-        mojoSniffer.sessionStarted(session);
-    }
-
-    @Override
-    public void afterSessionEnd(MavenSession session) {
-        mojoSniffer.sessionStopped(session);
+    protected void configure() {
+        MojoSniffer sniffer = new MojoSniffer();
+        requestInjection(sniffer);
+        bind(MojoSniffer.class).toInstance(sniffer);
+        bindInterceptor(sniffer.getClassMatcher(), sniffer.getMethodMatcher(), sniffer.getMethodInterceptor());
     }
 }

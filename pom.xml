@@ -49,6 +49,9 @@
   <properties>
     <javaVersion>8</javaVersion>
     <project.build.outputTimestamp>2023-03-24T12:00:00Z</project.build.outputTimestamp>
+
+    <version.slf4j>1.7.36</version.slf4j>
+    <version.maven>3.9.1</version.maven>
   </properties>
 
   <dependencies>
@@ -58,13 +61,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version>
+      <version>${version.slf4j}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.1</version>
+      <version>${version.maven}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -104,7 +107,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version>
+      <version>${version.slf4j}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>${version.maven}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
